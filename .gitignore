@@ -12,10 +12,9 @@ predictions.db
 # Exports
 *.csv
 *.pdf
-    
+
 # Cache
 __pycache__/
 *.pyc
 
-*.keras
 *.h5
