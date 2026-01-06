@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Disease Analytics</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: linear-gradient(135deg, #56ab2f, #a8e063);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .card {
+            width: 100%;
+            max-width: 900px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 18px;
+            padding: 25px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+            animation: fadeIn 0.6s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+
+        .header h2 {
+            margin: 0;
+            color: #2f6f3e;
+        }
+
+        .header p {
+            margin: 5px 0 0;
+            color: #555;
+            font-size: 14px;
+        }
+
+        .back-link {
+            text-decoration: none;
+            color: #2f6f3e;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        canvas {
+            margin-top: 30px;
+        }
+
+        .note {
+            margin-top: 15px;
+            font-size: 13px;
+            color: #666;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="card">
+    <div class="header">
+        <div>
+            <h2>📊 Disease Analytics</h2>
+            <p>Most frequently detected plant diseases</p>
+        </div>
+        <a href="/" class="back-link">⬅ Back to Prediction</a>
+    </div>
+
+    <canvas id="diseaseChart"></canvas>
+
+    <div class="note">
+        Data is generated from prediction history stored in the system database.
+    </div>
+</div>
+
+<script>
+const labels = {{ labels | tojson }};
+const values = {{ values | tojson }};
+
+const ctx = document.getElementById('diseaseChart');
+
+new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: labels,
+        datasets: [{
+            label: 'Number of Occurrences',
+            data: values,
+            backgroundColor: 'rgba(40, 167, 69, 0.75)',
+            borderRadius: 8
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: {
+                display: true
+            },
+            tooltip: {
+                backgroundColor: '#2f6f3e',
+                titleColor: '#fff',
+                bodyColor: '#fff'
+            }
+        },
+        scales: {
+            x: {
+                ticks: {
+                    autoSkip: false,
+                    maxRotation: 60,
+                    minRotation: 45
+                }
+            },
+            y: {
+                beginAtZero: true,
+                title: {
+                    display: true,
+                    text: 'Detection Count'
+                }
+            }
+        }
+    }
+});
+</script>
+
+</body>
+</html>
+    

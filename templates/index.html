@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Plant Disease Detection</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: linear-gradient(135deg, #56ab2f, #a8e063);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .card {
+            width: 100%;
+            max-width: 460px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 18px;
+            padding: 25px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+            text-align: center;
+            animation: fadeIn 0.6s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h2 {
+            margin: 0;
+            color: #2f6f3e;
+        }
+
+        .nav-links {
+            margin: 12px 0 18px;
+            font-size: 14px;
+        }
+
+        .nav-links a {
+            color: #2f6f3e;
+            text-decoration: none;
+            margin: 0 6px;
+            font-weight: 600;
+        }
+
+        input[type="file"] {
+            width: 100%;
+            padding: 10px;
+            margin-top: 12px;
+            border-radius: 10px;
+            border: 1px dashed #aaa;
+            cursor: pointer;
+        }
+
+        button {
+            width: 100%;
+            margin-top: 15px;
+            padding: 14px;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #28a745, #5ad66f);
+            color: white;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(40,167,69,0.3);
+        }
+
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        img {
+            width: 100%;
+            border-radius: 14px;
+            margin-top: 18px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+        }
+
+        .result {
+            margin-top: 18px;
+            padding: 12px;
+            border-radius: 12px;
+            background: #f7fdf8;
+        }
+
+        .confidence-high {
+            color: #28a745;
+            font-weight: bold;
+        }
+
+        .confidence-low {
+            color: #dc3545;
+            font-weight: bold;
+        }
+
+        .warning {
+            background: #fff3cd;
+            color: #856404;
+            padding: 10px;
+            border-radius: 10px;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+
+        .treatment {
+            background: #e9f7ef;
+            border-left: 5px solid #28a745;
+            padding: 12px;
+            border-radius: 10px;
+            margin-top: 12px;
+            text-align: left;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+<div class="card">
+    <h2>🍃 Plant Disease Detection using ML</h2>
+
+    <div class="nav-links">
+        <a href="/history">📜 History</a> |
+        <a href="/analytics">📊 Analytics</a> |
+        <a href="/export/csv">⬇ CSV</a> |
+        <a href="/export/pdf">⬇ PDF</a>
+    </div>
+
+    <form method="POST" enctype="multipart/form-data" onsubmit="disableBtn()">
+        <input type="file" name="image" accept="image/*" required>
+        <button id="predictBtn" type="submit">Predict Disease</button>
+    </form>
+
+    {% if image_path %}
+        <img src="{{ image_path }}">
+    {% endif %}
+
+    {% if prediction %}
+        <div class="result">
+            <h3>{{ prediction }}</h3>
+
+            {% if confidence %}
+                <p class="{{ 'confidence-high' if confidence >= 60 else 'confidence-low' }}">
+                    Confidence: {{ confidence | round(2) }}%
+                </p>
+            {% endif %}
+        </div>
+    {% endif %}
+
+    {% if prediction and "Uncertain" in prediction %}
+        <div class="warning">
+            ⚠️ Low confidence detected. Please upload a clearer leaf image.
+        </div>
+    {% endif %}
+
+    {% if treatment %}
+        <div class="treatment">
+            <b>🌿 Treatment Recommendation</b><br>
+            {{ treatment }}
+        </div>
+    {% endif %}
+</div>
+
+<script>
+function disableBtn() {
+    const btn = document.getElementById("predictBtn");
+    btn.disabled = true;
+    btn.innerText = "Analyzing...";
+}
+</script>
+
+</body>
+</html>

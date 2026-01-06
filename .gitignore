@@ -1,0 +1,18 @@
+# Virtual environment
+.venv/
+
+# Dataset (VERY IMPORTANT)
+PlantVillage-Dataset/
+dataset/
+
+# Uploads & DB
+static/uploads/*
+predictions.db
+
+# Exports
+*.csv
+*.pdf
+
+# Cache
+__pycache__/
+*.pyc

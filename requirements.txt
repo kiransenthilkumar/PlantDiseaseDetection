@@ -1,0 +1,6 @@
+flask
+gunicorn
+tensorflow==2.15.0
+opencv-python-headless
+numpy
+fpdf
